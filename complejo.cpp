@@ -1,53 +1,215 @@
+
 #include <iostream>
+#include <cmath>
 #include "complejo.h"
 
 
-complejo:: complejo () 
-{ 
-    vec[0] = 0.0 ;
-    vec[1] = 0.0;    
-}
+using namespace std;
 
-complejo:: complejo ( const complejo & c )
+complejo::complejo() : re_(0), im_(0)
 {
-    vec[0] = c.vec[0]; 
-    vec[1] = c.vec[1];
 }
 
-
-complejo:: complejo ( double a, double b )
+complejo::complejo(double r) : re_(r), im_(0)
 {
-    vec[0] = a;
-    vec[1] = b;
 }
 
-
-complejo& complejo:: operator = ( const complejo & b )
+complejo::complejo(double r, double i) : re_(r), im_(i)
 {
-    vec[0] = b.vec[0];
-    vec[1] = b.vec[1];
-    return *this;
 }
 
-complejo complejo:: operator + (const complejo &r)
+complejo::complejo(complejo const &c) : re_(c.re_), im_(c.im_)
 {
-    return complejo ( vec[0] + r.vec[0] , vec[1] + r.vec[1] );
 }
 
-complejo complejo:: operator + (double f)
-{ 
-    return complejo ( vec[0] + f, vec[1] );
-}
-
-
-
-//y además, esta función para sumar real y complejo
-complejo operator +(float x , const complejo & c)
+complejo const &
+complejo::operator=(complejo const &c)
 {
-    complejo aux;
+	re_ = c.re_;
+	im_ = c.im_;
+	return *this;
+}
 
-    aux.SetReal( x + c.GetReal() );
-    aux.SetImag( c.GetImag() );
+complejo const &
+complejo::operator*=(complejo const &c)
+{
+	double re = re_ * c.re_
+	         - im_ * c.im_;
+	double im = re_ * c.im_
+	         + im_ * c.re_;
+	re_ = re, im_ = im;
+	return *this;
+}
 
-    return aux;
+complejo const &
+complejo::operator+=(complejo const &c)
+{
+	double re = re_ + c.re_;
+	double im = im_ + c.im_;
+	re_ = re, im_ = im;
+	return *this;
+}
+
+complejo const &
+complejo::operator-=(complejo const &c)
+{
+	double re = re_ - c.re_;
+	double im = im_ - c.im_;
+	re_ = re, im_ = im;
+	return *this;
+}
+
+complejo::~complejo()
+{
+}
+
+double
+complejo::re() const
+{
+	return re_;
+}
+
+double complejo::im() const
+{
+	return im_;
+}
+
+double
+complejo::abs() const
+{
+	return std::sqrt(re_ * re_ + im_ * im_);
+}
+
+double
+complejo::abs2() const
+{
+	return re_ * re_ + im_ * im_;
+}
+
+complejo const &
+complejo::conjugar()
+{
+	im_*= -1;
+	return *this;
+}
+
+complejo const
+complejo::conjugado() const
+{
+	return complejo(re_, -im_);
+}
+
+bool
+complejo::zero() const
+{
+#define ZERO(x) ((x) == +0.0 && (x) == -0.0)
+	return ZERO(re_) && ZERO(im_) ? true : false;
+}
+
+complejo const
+operator+(complejo const &x, complejo const &y)
+{
+	complejo z(x.re_ + y.re_, x.im_ + y.im_);
+	return z;
+}
+
+complejo const
+operator-(complejo const &x, complejo const &y)
+{
+	complejo r(x.re_ - y.re_, x.im_ - y.im_);
+	return r;
+}
+
+complejo const
+operator*(complejo const &x, complejo const &y)
+{
+	complejo r(x.re_ * y.re_ - x.im_ * y.im_,
+	          x.re_ * y.im_ + x.im_ * y.re_);
+	return r;
+}
+
+complejo const
+operator/(complejo const &x, complejo const &y)
+{
+	return x * y.conjugado() / y.abs2();
+}
+
+complejo const
+operator/(complejo const &c, double f)
+{
+	return complejo(c.re_ / f, c.im_ / f);
+}
+
+bool
+operator==(complejo const &c, double f)
+{
+	bool b = (c.im_ != 0 || c.re_ != f) ? false : true;
+	return b;
+}
+
+bool
+operator==(complejo const &x, complejo const &y)
+{
+	bool b = (x.re_ != y.re_ || x.im_ != y.im_) ? false : true;
+	return b;
+}
+
+bool
+operator!=(complejo const &c, double f)
+{
+	bool b = (c.im_ != 0 || c.re_ != f) ? true : false;
+	return b;
+}
+
+bool
+operator!=(complejo const &x, complejo const &y)
+{
+	bool b = (x.re_ != y.re_ || x.im_ != y.im_) ? true : false;
+	return b;
+}
+
+ostream &
+operator<<(ostream &os, const complejo &c)
+{
+	return os << "(" 
+	          << c.re_
+	          << ", " 
+	          << c.im_
+	          << ")";
+}
+
+istream &
+operator>>(istream &is, complejo &c)
+{
+	int good = false;
+	int bad  = false;
+	double re = 0;
+	double im = 0;
+	char ch = 0;
+
+	if (is >> ch
+	    && ch == '(') {
+		if (is >> re
+		    && is >> ch
+		    && ch == ','
+		    && is >> im
+		    && is >> ch
+		    && ch == ')')
+			good = true;
+		else
+			bad = true;
+	} else if (is.good()) {
+		is.putback(ch);
+		if (is >> re)
+			good = true;
+		else
+			bad = true;
+	}
+
+	if (good)
+		c.re_ = re, c.im_ = im;
+	if (bad)
+		is.clear(ios::badbit);
+
+	return is;
 }

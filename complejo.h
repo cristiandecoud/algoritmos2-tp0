@@ -1,43 +1,43 @@
+#ifndef _COMPLEJO_H_INCLUDED_
+#define _COMPLEJO_H_INCLUDED_
+
 #include <iostream>
-using namespace std;
-#ifndef COMPLEJO_INCLUDED
-#define COMPLEJO_INCLUDED
 
-class complejo
-{
-    private:
-        double vec[2];
+class complejo {
+	double re_, im_;
+public:
+	complejo();
+	complejo(double);
+	complejo(double, double);
+	complejo(const complejo &);
+	complejo const &operator=(complejo const &);
+	complejo const &operator*=(complejo const &);
+	complejo const &operator+=(complejo const &);
+	complejo const &operator-=(complejo const &);
+	~complejo();
 
-    public:
-        complejo();
-        complejo( double , double );
-        complejo( const complejo & );
-        complejo& operator= ( const complejo & );
+	double re() const;
+	double im() const;
+	double abs() const;
+	double abs2() const;
+	complejo const &conjugar();
+	complejo const conjugado() const;
+	bool zero() const;
 
-        double GetReal() const 
-        {
-            return vec[0];
-        }
+	friend complejo const operator+(complejo const &, complejo const &);
+	friend complejo const operator-(complejo const &, complejo const &);
+	friend complejo const operator*(complejo const &, complejo const &);
+	friend complejo const operator/(complejo const &, complejo const &);
+	friend complejo const operator/(complejo const &, double);
 
-        double GetImag() const 
-        {
-            return vec[1];
-        }
+	friend bool operator==(complejo const &, double);
+	friend bool operator==(complejo const &, complejo const &);
 
-        void SetReal( double xx )
-        { 
-            vec[0] = xx; 
-        }
+    friend bool operator!=(complejo const &, double);
+	friend bool operator!=(complejo const &, complejo const &);
 
-        void SetImag(double yy)
-        {
-            vec[1] = yy;
-        }
-
-        complejo operator+ ( const complejo & );
-        complejo operator+ ( double );
-
-        ~complejo() {}
+	friend std::ostream &operator<<(std::ostream &, const complejo &);
+	friend std::istream &operator>>(std::istream &, complejo &);
 };
 
-#endif // COMPLEJO_INCLUDED
+#endif
