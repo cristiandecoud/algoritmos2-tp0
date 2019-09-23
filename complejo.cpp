@@ -6,32 +6,32 @@
 
 using namespace std;
 
-complejo::complejo() : re_(0), im_(0)
+Complejo::Complejo() : re_(0), im_(0)
 {
 }
 
-complejo::complejo(double r) : re_(r), im_(0)
+Complejo::Complejo(double r) : re_(r), im_(0)
 {
 }
 
-complejo::complejo(double r, double i) : re_(r), im_(i)
+Complejo::Complejo(double r, double i) : re_(r), im_(i)
 {
 }
 
-complejo::complejo(complejo const &c) : re_(c.re_), im_(c.im_)
+Complejo::Complejo(Complejo const &c) : re_(c.re_), im_(c.im_)
 {
 }
 
-complejo const &
-complejo::operator=(complejo const &c)
+Complejo const &
+Complejo::operator=(Complejo const &c)
 {
 	re_ = c.re_;
 	im_ = c.im_;
 	return *this;
 }
 
-complejo const &
-complejo::operator*=(complejo const &c)
+Complejo const &
+Complejo::operator*=(Complejo const &c)
 {
 	double re = re_ * c.re_
 	         - im_ * c.im_;
@@ -41,8 +41,8 @@ complejo::operator*=(complejo const &c)
 	return *this;
 }
 
-complejo const &
-complejo::operator+=(complejo const &c)
+Complejo const &
+Complejo::operator+=(Complejo const &c)
 {
 	double re = re_ + c.re_;
 	double im = im_ + c.im_;
@@ -50,8 +50,8 @@ complejo::operator+=(complejo const &c)
 	return *this;
 }
 
-complejo const &
-complejo::operator-=(complejo const &c)
+Complejo const &
+Complejo::operator-=(Complejo const &c)
 {
 	double re = re_ - c.re_;
 	double im = im_ - c.im_;
@@ -59,117 +59,117 @@ complejo::operator-=(complejo const &c)
 	return *this;
 }
 
-complejo::~complejo()
+Complejo::~Complejo()
 {
 }
 
 double
-complejo::re() const
+Complejo::re() const
 {
 	return re_;
 }
 
-double complejo::im() const
+double Complejo::im() const
 {
 	return im_;
 }
 
 double
-complejo::abs() const
+Complejo::abs() const
 {
 	return std::sqrt(re_ * re_ + im_ * im_);
 }
 
 double
-complejo::abs2() const
+Complejo::abs2() const
 {
 	return re_ * re_ + im_ * im_;
 }
 
-complejo const &
-complejo::conjugar()
+Complejo const &
+Complejo::conjugar()
 {
 	im_*= -1;
 	return *this;
 }
 
-complejo const
-complejo::conjugado() const
+Complejo const
+Complejo::conjugado() const
 {
-	return complejo(re_, -im_);
+	return Complejo(re_, -im_);
 }
 
 bool
-complejo::zero() const
+Complejo::zero() const
 {
 #define ZERO(x) ((x) == +0.0 && (x) == -0.0)
 	return ZERO(re_) && ZERO(im_) ? true : false;
 }
 
-complejo const
-operator+(complejo const &x, complejo const &y)
+Complejo const
+operator+(Complejo const &x, Complejo const &y)
 {
-	complejo z(x.re_ + y.re_, x.im_ + y.im_);
+	Complejo z(x.re_ + y.re_, x.im_ + y.im_);
 	return z;
 }
 
-complejo const
-operator-(complejo const &x, complejo const &y)
+Complejo const
+operator-(Complejo const &x, Complejo const &y)
 {
-	complejo r(x.re_ - y.re_, x.im_ - y.im_);
+	Complejo r(x.re_ - y.re_, x.im_ - y.im_);
 	return r;
 }
 
-complejo const
-operator*(complejo const &x, complejo const &y)
+Complejo const
+operator*(Complejo const &x, Complejo const &y)
 {
-	complejo r(x.re_ * y.re_ - x.im_ * y.im_,
+	Complejo r(x.re_ * y.re_ - x.im_ * y.im_,
 	          x.re_ * y.im_ + x.im_ * y.re_);
 	return r;
 }
 
-complejo const
-operator/(complejo const &x, complejo const &y)
+Complejo const
+operator/(Complejo const &x, Complejo const &y)
 {
 	return x * y.conjugado() / y.abs2();
 }
 
-complejo const
-operator/(complejo const &c, double f)
+Complejo const
+operator/(Complejo const &c, double f)
 {
-	return complejo(c.re_ / f, c.im_ / f);
+	return Complejo(c.re_ / f, c.im_ / f);
 }
 
 bool
-operator==(complejo const &c, double f)
+operator==(Complejo const &c, double f)
 {
 	bool b = (c.im_ != 0 || c.re_ != f) ? false : true;
 	return b;
 }
 
 bool
-operator==(complejo const &x, complejo const &y)
+operator==(Complejo const &x, Complejo const &y)
 {
 	bool b = (x.re_ != y.re_ || x.im_ != y.im_) ? false : true;
 	return b;
 }
 
 bool
-operator!=(complejo const &c, double f)
+operator!=(Complejo const &c, double f)
 {
 	bool b = (c.im_ != 0 || c.re_ != f) ? true : false;
 	return b;
 }
 
 bool
-operator!=(complejo const &x, complejo const &y)
+operator!=(Complejo const &x, Complejo const &y)
 {
 	bool b = (x.re_ != y.re_ || x.im_ != y.im_) ? true : false;
 	return b;
 }
 
 ostream &
-operator<<(ostream &os, const complejo &c)
+operator<<(ostream &os, const Complejo &c)
 {
 	return os << "(" 
 	          << c.re_
@@ -179,7 +179,7 @@ operator<<(ostream &os, const complejo &c)
 }
 
 istream &
-operator>>(istream &is, complejo &c)
+operator>>(istream &is, Complejo &c)
 {
 	int good = false;
 	int bad  = false;

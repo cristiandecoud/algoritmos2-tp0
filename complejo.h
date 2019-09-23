@@ -3,41 +3,41 @@
 
 #include <iostream>
 
-class complejo {
+class Complejo {
 	double re_, im_;
 public:
-	complejo();
-	complejo(double);
-	complejo(double, double);
-	complejo(const complejo &);
-	complejo const &operator=(complejo const &);
-	complejo const &operator*=(complejo const &);
-	complejo const &operator+=(complejo const &);
-	complejo const &operator-=(complejo const &);
-	~complejo();
+	Complejo();
+	Complejo(double);
+	Complejo(double, double);
+	Complejo(const Complejo &);
+	Complejo const &operator=(Complejo const &);
+	Complejo const &operator*=(Complejo const &);
+	Complejo const &operator+=(Complejo const &);
+	Complejo const &operator-=(Complejo const &);
+	~Complejo();
 
 	double re() const;
 	double im() const;
 	double abs() const;
 	double abs2() const;
-	complejo const &conjugar();
-	complejo const conjugado() const;
+	Complejo const &conjugar();
+	Complejo const conjugado() const;
 	bool zero() const;
 
-	friend complejo const operator+(complejo const &, complejo const &);
-	friend complejo const operator-(complejo const &, complejo const &);
-	friend complejo const operator*(complejo const &, complejo const &);
-	friend complejo const operator/(complejo const &, complejo const &);
-	friend complejo const operator/(complejo const &, double);
+	friend Complejo const operator+(Complejo const &, Complejo const &);
+	friend Complejo const operator-(Complejo const &, Complejo const &);
+	friend Complejo const operator*(Complejo const &, Complejo const &);
+	friend Complejo const operator/(Complejo const &, Complejo const &);
+	friend Complejo const operator/(Complejo const &, double);
 
-	friend bool operator==(complejo const &, double);
-	friend bool operator==(complejo const &, complejo const &);
+	friend bool operator==(Complejo const &, double);
+	friend bool operator==(Complejo const &, Complejo const &);
 
-    friend bool operator!=(complejo const &, double);
-	friend bool operator!=(complejo const &, complejo const &);
+    friend bool operator!=(Complejo const &, double);
+	friend bool operator!=(Complejo const &, Complejo const &);
 
-	friend std::ostream &operator<<(std::ostream &, const complejo &);
-	friend std::istream &operator>>(std::istream &, complejo &);
+	friend std::ostream &operator<<(std::ostream &, const Complejo &);
+	friend std::istream &operator>>(std::istream &, Complejo &);
 };
 
 #endif
