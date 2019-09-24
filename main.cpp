@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <fstream>
+#include <string>
 #include "complejo.h"
 #include "complejo.cpp"
 #include "array.h"
@@ -11,30 +13,63 @@ using namespace std;
 int main()
 {
     Array <Complejo> x(4);
-    Array <Complejo> y(4);
+    string line = "Hello";
+    size_t line_count = 0;
 
     std::cout << std::fixed;
 
-    for(int i=0; i<4; i++){
-        std::cin >> x[i];
-    }
+    std::ifstream input_file;
+    input_file.open("prueba.txt", ifstream::in);
 
-    y = DFT(x);
+    while (getline(input_file, line)){
+        line_count++;
+    }
+    
+    input_file.close();
+    input_file.open("prueba.txt", ifstream::in);
     
 
-    for(int i=0; i<x.getSize(); i++){
-        std::cout << y[i] << endl; 
+    for(int i=0; i<1; i++){
+        size_t j = 0;
+        int c = input_file.get();   
+            //std::cout << "hola" << c << endl;
+        while(c != '\n' && c != EOF){
+            input_file.putback(c);
+            input_file >> x[j];
+            cout << x[j];
+            c = input_file.get();
+            //if(c != ' '){
+                //  if(c != EOF){
+                //    std::cout << c << "Todo mal" <<endl;
+                //}
+            //}
+            j++;
+        }
+        Array <Complejo> y = DFT(x);
+        // for(int k=0; k<y.getSize(); k++){
+        //     std::cout << y[k] << endl;
+        // }
     }
 
-    for(int i=0; i<4; i++){
-        std::cin >> y[i];
-    }
 
-    x = IDFT(y);
+    input_file.close();
 
-    for(int i=0; i<y.getSize(); i++){
-        std::cout << x[i] << endl; 
-    }
+    
+
+    //y = DFT(x);
+    
+
+ 
+
+    // for(int i=0; i<4; i++){
+    //     std::cin >> y[i];
+    // }
+
+    // x = IDFT(y);
+
+    // for(int i=0; i<y.getSize(); i++){
+    //     std::cout << x[i] << endl; 
+    // }
 
 
     // cout << "a vale" << endl;
