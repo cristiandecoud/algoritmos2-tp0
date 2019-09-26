@@ -1,12 +1,12 @@
 #ifndef _FOURIER_H_INCLUDED_
 #define _FOURIER_H_INCLUDED_
 
-Array <Complejo> DFT(const Array <Complejo>& x){
-    Array <Complejo>  y;
+Array <Complejo> DFT(const Array <Complejo>& x, const size_t & size){
+    Array <Complejo>  y( size );
 
-    for(int k=0; k<x.getSize(); k++){
-        for(int n=0; n<x.getSize(); n++){
-            Complejo aux(cos(2*M_PI*n*k/x.getSize()),(-1)*sin(2*M_PI*n*k/x.getSize()));
+    for(int k=0; k<size; k++){
+        for(int n=0; n<size; n++){
+            Complejo aux(cos(2*M_PI*n*k/size),(-1)*sin(2*M_PI*n*k/size));
             y[k] += x[n] * aux;
         }
     }

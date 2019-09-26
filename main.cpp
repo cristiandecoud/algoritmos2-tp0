@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <fstream>
+#include <string>
 #include "complejo.h"
 #include "complejo.cpp"
 #include "array.h"
@@ -10,54 +12,52 @@ using namespace std;
 
 int main()
 {
-    Array <Complejo> x(4);
-    Array <Complejo> y(4);
+    cout << fixed;      //Para que no imprima en notación científica.
+    cout.precision(2);  //Para imprimir con dos decimales.
 
-    std::cout << std::fixed;
+    ifstream input_file;
+    input_file.open("prueba.txt", ifstream::in);
 
-    for(int i=0; i<4; i++){
-        std::cin >> x[i];
+    string line;
+    size_t line_count = 0;
+
+    while (getline(input_file, line)){
+        line_count++;
     }
-
-    y = DFT(x);
     
+    input_file.clear();
+    input_file.seekg(0, input_file.beg);    //Vuelvo al comienzo del archivo.
+    
+    Array <Complejo> x(500);
 
-    for(int i=0; i<x.getSize(); i++){
-        std::cout << y[i] << endl; 
+    for(int i=0; i<line_count; i++){
+
+        size_t j = 0;
+        int c = input_file.get();
+
+        while(c != '\n' && c != EOF){
+
+            input_file.putback(c);
+            input_file >> x[j];
+            j++;
+            c = input_file.get();
+            
+        }
+
+        std::cout << '\n' << "\e[92m Resultado de la linea \e[0m" << i  << endl;
+
+        Array <Complejo> y = DFT(x, j);
+
+        //   std::cout << '\n' << y[0] << '\n' << endl;
+        for( int k = 0; k < y.getSize(); k++ ) {
+            std::cout << y[k] << endl;
+        }
     }
 
-    for(int i=0; i<4; i++){
-        std::cin >> y[i];
-    }
-
-    x = IDFT(y);
-
-    for(int i=0; i<y.getSize(); i++){
-        std::cout << x[i] << endl; 
-    }
-
-
-    // cout << "a vale" << endl;
-    // std:: cout << "(" << a.GetReal() << "," << a.GetImag() << ")" << endl;
-
-    // cout << " b vale" << endl;
-    // std:: cout << "(" << b.GetReal() << "," << b.GetImag() << ")" << endl;
-
-    // cout << " c vale" << endl;
-    // std:: cout << "(" << c.GetReal() << "," << c.GetImag() << ")" << endl;
-
-    // cout << "a=b+c" << endl;
-
-    // a = b + c;
-
-    // cout << "resultado: a vale" << endl;
-    // std:: cout << "(" << a.GetReal() << "," << a.GetImag() << ")" << endl;
-
-    // cout << "suma el complejo b y el real 5" << endl;
-
-    // a = b + 5; //
-
-    // std:: cout << "(" << a.GetReal() << "," << a.GetImag() << ")" << endl;
-
+    input_file.close();
     return 0;
 }
+
+
+
+    
