@@ -10,10 +10,6 @@ Array <Complejo> DFT(const Array <Complejo>& x){
             y[k] += x[n] * aux;
         }
     }
-
-    for(int k=0; k<y.getSize(); k++){
-         std::cout << y[k] << endl;
-    }
     return y;
 
 }
