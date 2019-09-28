@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "complejo.h"
 #include "complejo.cpp"
 #include "array.h"
@@ -28,33 +29,31 @@ int main()
     // input_file.clear();
     // input_file.seekg(0, input_file.beg);    //Vuelvo al comienzo del archivo.
     
-    Array <Complejo> x(500); // Solo se pueden calcular hasta 500 numeros complejos por linea
+    vector<Complejo> x; 
+    Complejo aux;
 
-     while( input_file ) {
+    while( input_file ) {
 
-        size_t j = 0;
         int c = input_file.get();
 
         while( c != '\n' && c != EOF ){
 
             input_file.putback(c);
-            input_file >> x[j];
-            c = input_file.get();
+            input_file >> aux;
+            x.push_back( aux );
             
-            j++;
+            c = input_file.get();
         }
 
-
-        Array <Complejo> y = DFT(x, j);
+        vector <Complejo> y = DFT(x);
 
         if( input_file ) {
             std::cout << '\n' << "\e[92m Resultado de la linea \e[0m" << endl;
 
-            for( int k = 0; k < y.getSize(); k++ ) {
+            for( int k = 0; k < y.size(); k++ ) {
                 std::cout << y[k] << endl;
             }
         }
-        
     };
 
     input_file.close();
