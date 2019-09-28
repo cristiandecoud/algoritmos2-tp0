@@ -18,41 +18,44 @@ int main()
     ifstream input_file;
     input_file.open("prueba.txt", ifstream::in);
 
-    string line;
-    size_t line_count = 0;
+    // string line;
+    // size_t line_count = 0;
 
-    while (getline(input_file, line)){
-        line_count++;
-    }
+    // while( getline( input_file, line ) ){
+    //     line_count++;
+    // }
     
-    input_file.clear();
-    input_file.seekg(0, input_file.beg);    //Vuelvo al comienzo del archivo.
+    // input_file.clear();
+    // input_file.seekg(0, input_file.beg);    //Vuelvo al comienzo del archivo.
     
-    Array <Complejo> x(500);
+    Array <Complejo> x(500); // Solo se pueden calcular hasta 500 numeros complejos por linea
 
-    for(int i=0; i<line_count; i++){
+     while( input_file ) {
 
         size_t j = 0;
         int c = input_file.get();
 
-        while(c != '\n' && c != EOF){
+        while( c != '\n' && c != EOF ){
 
             input_file.putback(c);
             input_file >> x[j];
-            j++;
             c = input_file.get();
             
+            j++;
         }
 
-        std::cout << '\n' << "\e[92m Resultado de la linea \e[0m" << i  << endl;
 
         Array <Complejo> y = DFT(x, j);
 
-        //   std::cout << '\n' << y[0] << '\n' << endl;
-        for( int k = 0; k < y.getSize(); k++ ) {
-            std::cout << y[k] << endl;
+        if( input_file ) {
+            std::cout << '\n' << "\e[92m Resultado de la linea \e[0m" << endl;
+
+            for( int k = 0; k < y.getSize(); k++ ) {
+                std::cout << y[k] << endl;
+            }
         }
-    }
+        
+    };
 
     input_file.close();
     return 0;

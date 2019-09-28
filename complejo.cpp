@@ -213,3 +213,4 @@ operator>>(istream &is, Complejo &c)
 
 	return is;
 }
+
