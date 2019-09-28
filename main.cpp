@@ -19,23 +19,14 @@ int main()
     ifstream input_file;
     input_file.open("prueba.txt", ifstream::in);
 
-    // string line;
-    // size_t line_count = 0;
-
-    // while( getline( input_file, line ) ){
-    //     line_count++;
-    // }
-    
-    // input_file.clear();
-    // input_file.seekg(0, input_file.beg);    //Vuelvo al comienzo del archivo.
-    
-    vector<Complejo> x; 
+    vector <Complejo> x; 
     Complejo aux;
 
     while( input_file ) {
 
         int c = input_file.get();
-
+        x.clear();
+ 
         while( c != '\n' && c != EOF ){
 
             input_file.putback(c);
