@@ -1,12 +1,12 @@
 #ifndef _FOURIER_H_INCLUDED_
 #define _FOURIER_H_INCLUDED_
 
-vector <Complejo> DFT(const vector <Complejo>& x ){
-    vector <Complejo>  y( x.size() );
+Array <Complejo> DFT(const Array <Complejo>& x, const size_t size){
+    Array <Complejo>  y(size);             //y debe tener el mismo tamaño que x
 
-    for(int k=0; k<x.size(); k++){
-        for(int n=0; n<x.size(); n++){
-            Complejo aux(cos(2*M_PI*n*k/x.size()),(-1)*sin(2*M_PI*n*k/x.size()));
+    for(int k=0; k<size; k++){
+        for(int n=0; n<size; n++){
+            Complejo aux(cos(2*M_PI*n*k/size),(-1)*sin(2*M_PI*n*k/size));
             y[k] += x[n] * aux;
         }
     }
@@ -14,18 +14,18 @@ vector <Complejo> DFT(const vector <Complejo>& x ){
 
 }
 
-Array <Complejo> IDFT(const Array <Complejo>& y){
-    Array <Complejo>  x;
+// Array <Complejo> IDFT(const Array <Complejo>& y){
+//     Array <Complejo>  x;
 
-    for(int n=0; n<y.getSize(); n++){
-        for(int k=0; k<y.getSize(); k++){
-            Complejo aux(cos(2*M_PI*n*k/x.getSize()),sin(2*M_PI*n*k/x.getSize()));
-            x[n] += (y[k] * aux) / y.getSize();
-        }
-        //x[n] = x[n] / y.getSize();
-    }
-    return x;
+//     for(int n=0; n<size; n++){
+//         for(int k=0; k<size; k++){
+//             Complejo aux(cos(2*M_PI*n*k/size),sin(2*M_PI*n*k/size));
+//             x[n] += (y[k] * aux) / size;
+//         }
+//         //x[n] = x[n] / y.size;
+//     }
+//     return x;
 
-}
+// }
 
 #endif

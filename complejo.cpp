@@ -210,7 +210,7 @@ operator>>(istream &is, Complejo &c)
 		c.re_ = re, c.im_ = im;
 	if (bad)
 		is.clear(ios::badbit);
-
+	
 	return is;
 }
 

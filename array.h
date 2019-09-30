@@ -36,7 +36,7 @@ Array<T>::Array()
 template <class T>
 Array<T>::Array(size_t x)
 {
-    if ((x<1)||(x>500)) size=10; else size=x;   
+    if ((x<1)) size=10; else size=x;   
     ptr = new T[size];
 }
 

@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <fstream>
 #include <string>
-#include <vector>
 #include "complejo.h"
 #include "complejo.cpp"
 #include "array.h"
@@ -19,32 +18,40 @@ int main()
     ifstream input_file;
     input_file.open("prueba.txt", ifstream::in);
 
-    vector <Complejo> x; 
-    Complejo aux;
-
     while( input_file ) {
 
+        Array <Complejo> x; 
         int c = input_file.get();
-        x.clear();
- 
+        size_t i = 0;
         while( c != '\n' && c != EOF ){
 
             input_file.putback(c);
-            input_file >> aux;
-            x.push_back( aux );
-            
-            c = input_file.get();
-        }
-
-        vector <Complejo> y = DFT(x);
-
-        if( input_file ) {
-            std::cout << '\n' << "\e[92m Resultado de la linea \e[0m" << endl;
-
-            for( int k = 0; k < y.size(); k++ ) {
-                std::cout << y[k] << endl;
+            input_file >> x[i];
+            if((input_file.rdstate() & ifstream::badbit) !=0){
+                cout << "Error: los resultados de esta línea no son válidos."<<'\n';
+                input_file.clear();
+                i = 0;
+                c = input_file.get();
+                while ( c != '\n' && c != EOF){
+                    c = input_file.get();
+                }
+                break;
+                //input_file.putback(c);
             }
+            i++;
+            c = input_file.get();
+
         }
+
+        Array <Complejo> y = DFT(x, i);
+
+        
+        std::cout << '\n' << "\e[92m Resultado de la linea: \e[0m" << '\n';
+
+        for( int k = 0; k < y.getSize(); k++ ) {
+            std::cout << y[k] << '\n';
+        }
+        
     };
 
     input_file.close();
