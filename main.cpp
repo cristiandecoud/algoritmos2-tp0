@@ -17,41 +17,58 @@ int main()
 
     ifstream input_file;
     input_file.open("prueba.txt", ifstream::in);
+    
 
     while( input_file ) {
 
         Array <Complejo> x; 
         int c = input_file.get();
         size_t i = 0;
+        bool line_error = false;
+
         while( c != '\n' && c != EOF ){
 
             input_file.putback(c);
             input_file >> x[i];
+
             if((input_file.rdstate() & ifstream::badbit) !=0){
-                cout << "Error: los resultados de esta línea no son válidos."<<'\n';
+                
                 input_file.clear();
+                line_error = true;
                 i = 0;
                 c = input_file.get();
                 while ( c != '\n' && c != EOF){
                     c = input_file.get();
                 }
                 break;
-                //input_file.putback(c);
             }
             i++;
             c = input_file.get();
 
         }
 
-        Array <Complejo> y = DFT(x, i);
+        c = input_file.get();
 
-        
-        std::cout << '\n' << "\e[92m Resultado de la linea: \e[0m" << '\n';
-
-        for( int k = 0; k < y.getSize(); k++ ) {
-            std::cout << y[k] << '\n';
+        while( c == '\n' ) {
+            c = input_file.get();
         }
+        input_file.putback(c);
+
+        if( line_error ) {
+            cout << '\n' << "Error: los resultados de esta línea no son válidos."<<'\n';
+            line_error = false;
+            
+        } else if( i == 0 ){}
         
+        else {
+            Array <Complejo> y = DFT(x, i);
+            std::cout << '\n' << "\e[92m Resultado de la linea: \e[0m" << '\n';
+
+            for( int k = 0; k < y.getSize(); k++ ) {
+                std::cout << y[k] << '\n';
+            
+            }
+        }        
     };
 
     input_file.close();
