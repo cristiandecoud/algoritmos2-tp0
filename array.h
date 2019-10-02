@@ -17,6 +17,7 @@ class Array
         Array <T> &operator=( const Array<T> & );
         bool operator==( const Array<T> & ) const;
         T &operator[ ]( size_t ) const;
+        Array<T>& expand(size_t x);
         void emitir();
 
     private:
@@ -101,14 +102,27 @@ bool Array<T>::operator==( const Array<T> &rigth ) const
     return true;
 }
 
-
-
 template <class T>
 T& Array<T>::operator [ ]( size_t subscript ) const
 {
     
     return ptr[ subscript ]; // retorna referencia
   
+}
+
+template <class T>
+Array<T>& Array<T>::expand(size_t j)
+{
+    T * aux = new T[j];
+    size_t i;
+    for ( i = 0; i < size; i++ )
+    {   
+        aux[ i ] = ptr[ i ];
+    }
+    delete [] ptr;
+    size = j;
+    ptr = aux;
+    return *this;
 }
 
 #endif

@@ -27,7 +27,13 @@ int main()
         bool line_error = false;
 
         while( c != '\n' && c != EOF ){
-
+            
+            if(i>=x.getSize()){
+                //cout << "Tamaño inicial de x:" <<x.getSize() <<'\n';
+                x.expand(x.getSize() * 2);
+                //cout << "Tamaño final de x:" <<x.getSize() <<'\n';
+            }
+            
             input_file.putback(c);
             input_file >> x[i];
 
@@ -47,11 +53,12 @@ int main()
 
         }
 
-        c = input_file.get();
+        //c = input_file.get();
 
         while( c == '\n' ) {
             c = input_file.get();
         }
+
         input_file.putback(c);
 
         if( line_error ) {
