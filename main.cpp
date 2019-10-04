@@ -10,6 +10,30 @@
 
 using namespace std;
 
+static void
+saltar_lineas_blanco( ifstream &input_file )
+{
+    int c;
+    c = input_file.get();                   // 
+                                            //
+        while( c == '\n' || c == ' ' ) {    //
+            c = input_file.get();           // Para saltear lineas en blanco o llenas de espacios
+        }                                   //
+        input_file.putback(c);              //
+
+}
+
+static void
+saltar_espacios( int &c ,ifstream &input_file )
+{
+    
+    while ( c == ' ' ) {        //
+        c = input_file.get();   // Para que no rompa cuando lee espacios al final
+    } 
+}
+
+
+
 int main()
 {
     cout << fixed;      //Para que no imprima en notación científica.
@@ -23,10 +47,17 @@ int main()
 
         Array <Complejo> x; 
         int c = input_file.get();
+        int d;
         size_t i = 0;
         bool line_error = false;
 
-        while( c != '\n' && c != EOF ){
+        while( c != '\n'  && c != EOF ){
+
+            if(i>=x.getSize()){
+                //cout << "Tamaño inicial de x:" <<x.getSize() <<'\n';
+                x.expand(x.getSize() * 2);
+                //cout << "Tamaño final de x:" <<x.getSize() <<'\n';
+            }
 
             input_file.putback(c);
             input_file >> x[i];
@@ -43,16 +74,15 @@ int main()
                 break;
             }
             i++;
+
             c = input_file.get();
+
+            saltar_espacios( c, input_file );                          //
+            
 
         }
 
-        c = input_file.get();
-
-        while( c == '\n' ) {
-            c = input_file.get();
-        }
-        input_file.putback(c);
+        saltar_lineas_blanco( input_file );
 
         if( line_error ) {
             cout << '\n' << "Error: los resultados de esta línea no son válidos."<<'\n';
