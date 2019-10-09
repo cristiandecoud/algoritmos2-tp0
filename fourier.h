@@ -17,7 +17,6 @@ Array <Complejo> DFT(const Array <Complejo>& x, const size_t size){
 Array <Complejo> IDFT(const Array <Complejo>& y,  const size_t size){
     Array <Complejo>  x(size);
 
-    cout << "Calculo IDFT" << endl;
     for(int n=0; n<size; n++){
         for(int k=0; k<size; k++){
             Complejo aux(cos(2*M_PI*n*k/size),sin(2*M_PI*n*k/size));
