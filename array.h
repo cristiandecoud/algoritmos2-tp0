@@ -18,7 +18,6 @@ class Array
         bool operator==( const Array<T> & ) const;
         T &operator[ ]( size_t ) const;
         Array<T>& expand(size_t x);
-        void emitir();
 
     private:
         size_t size;
@@ -61,47 +60,39 @@ template <class T>
 size_t Array<T>::getSize() const { return size; }
 
 template <class T>
-Array<T>& Array<T>::operator=( const Array<T> &rigth )
+Array<T>& Array<T>::operator=( const Array<T> &right )
 {
-    if ( &rigth != this )
+    if ( &right != this )
     {
-        if ( size != rigth.size )
+        if ( size != right.size )
         {
             T *aux;
-            aux=new T[ rigth.size ];
+            aux=new T[ right.size ];
             delete [] ptr;
-            size =rigth.size ;
+            size =right.size ;
             ptr=aux;
-            for ( int i = 0; i < size; i++ )
-            {   
-                ptr[ i ] = rigth.ptr[ i ];
-            }
-                return *this;
-            }
-        else
-        {
-            for ( int i = 0; i < size; i++ )
-            {       
-                ptr[ i ] = rigth.ptr[ i ];
-            }
-            return *this; // al retornar una referencia permite x = y = z;
+        }
+        for ( int i = 0; i < size; i++ )
+        {       
+            ptr[ i ] = right.ptr[ i ];
         }
     }
-    return *this;
+    return *this;   // al retornar una referencia permite x = y = z;
 }
 
 template <class T>
-bool Array<T>::operator==( const Array<T> &rigth ) const
+bool Array<T>::operator==( const Array<T> &right ) const
 {
-    if ( size != rigth.size )
+    if ( size != right.size )
         return false;
     else
     for ( int i = 0; i < size; i++ )
-        if ( ptr[ i ] != rigth.ptr[ i ] )
+        if ( ptr[ i ] != right.ptr[ i ] )
             return false;
     return true;
 }
 
+//Pre-condición: subscript debe ser menor a atributo size
 template <class T>
 T& Array<T>::operator [ ]( size_t subscript ) const
 {

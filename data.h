@@ -1,14 +1,6 @@
 #ifndef _DATA_H_INCLUDED_
 #define _DATA_H_INCLUDED_
 
-// char * errors [MAX_ERRORS]{
-// 	"OK",
-// 	"ERROR ARCHIVO DE SALIDA",
-// 	"ERROR ARCHIVO DE ENTRADA",
-// 	"ERROR LINEA :",
-// 	"DE LECTURA DE ARCHIVO"
-// };
-
 typedef enum{
     OK,
     ERROR_NULL_POINTER,
@@ -21,6 +13,17 @@ status_t st;
 status_t validate_line(istream *is, ostream *os, size_t * i , Array <Complejo> &x) {
 
     int c = is->get();
+
+// Para imprimir lineas en blanco o llenas de espacios y que
+// el archivo de salida tenga la misma cantidad de lineas que el de entrada.
+    while (c == '\n' || c == ' '){
+        if(c == '\n'){
+            (*os) << '\n';
+            return EMPTY_LINE;
+        }
+        c = is->get();
+    }
+
     bool line_error = false;
 	size_t vect_size = 0;
  
@@ -55,21 +58,11 @@ status_t validate_line(istream *is, ostream *os, size_t * i , Array <Complejo> &
         while ( c == ' ' ) {
             c = is->get();   // Para que no rompa cuando lee espacios al final
         } 
-            
 
     }
-		
-    c = is->get();     
-		
-    while( c == '\n' || c == ' ' ) { 
-        c = is->get();           // Para saltear lineas en blanco o llenas de espacios
-    }                                   
-    is->putback(c);
 
     if( line_error ) {
         (*os) << "Error: los argumentos de esta línea no son válidos." <<endl;
-        // line_error = false;
-
         return ERROR_INVALID_LINE;
 			
             
