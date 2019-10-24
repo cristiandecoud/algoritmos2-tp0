@@ -6,15 +6,13 @@
 #include <sstream>
 #include <cstdlib>
 
+#include "data.h"
 #include "complejo.h"
-#include "complejo.cpp"
 #include "array.h"
 #include "fourier.h"
-#include "data.h"
-
-
 #include "cmdline.h"
-#include "cmdline.cc"
+
+
 using namespace std;
 
 

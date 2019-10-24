@@ -1,6 +1,8 @@
 #ifndef _FOURIER_H_INCLUDED_
 #define _FOURIER_H_INCLUDED_
 
+
+
 Array <Complejo> DFT(const Array <Complejo>& x, const size_t size){
     Array <Complejo>  y(size);             //y debe tener el mismo tamaño que x
 

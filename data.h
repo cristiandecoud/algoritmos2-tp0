@@ -1,6 +1,17 @@
 #ifndef _DATA_H_INCLUDED_
 #define _DATA_H_INCLUDED_
 
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <fstream>
+#include "complejo.cpp"
+#include "cmdline.cc"
+#include "complejo.h"
+#include "array.h"
+#include "fourier.h"
+#include "cmdline.h"
+
 typedef enum{
     OK,
     ERROR_NULL_POINTER,
@@ -25,33 +36,33 @@ status_t validate_line(istream *is, ostream *os, size_t * i , Array <Complejo> &
     }
 
     bool line_error = false;
-	size_t vect_size = 0;
+	size_t vect_index = 0;
  
-    if ( i==NULL )
+    if ( i == NULL )
         return ERROR_NULL_POINTER;
 
     while( c != '\n'  && c != EOF ){
 
-        if( vect_size >= x.getSize() ){
-            x.expand(x.getSize() * 2);
+        if( vect_index >= x.getSize() ){
+            x.expand(x.getSize() * 1.5);
         }
 
         is->putback(c);
-        *is >> x[vect_size];
+        *is >> x[vect_index];
 
         if((is->rdstate() & ifstream::badbit)){
-                
+
             is->clear();
             line_error = true;
-            vect_size = 0;
+            vect_index = 0;
             c = is->get();
-
+            
             while ( c != '\n' && c != EOF){
                     c = is->get();
             }
             break;
         }
-        vect_size++;
+        vect_index++;
 
         c = is->get();
 
@@ -66,10 +77,10 @@ status_t validate_line(istream *is, ostream *os, size_t * i , Array <Complejo> &
         return ERROR_INVALID_LINE;
 			
             
-    } else if( vect_size == 0 ){
+    } else if( vect_index == 0 ){
         return EMPTY_LINE;
     }
-    *i = vect_size;
+    *i = vect_index;
         return OK;
 }
 
