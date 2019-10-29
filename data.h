@@ -5,12 +5,12 @@
 #include <sstream>
 #include <string>
 #include <fstream>
-#include "complejo.cpp"
-#include "cmdline.cc"
+#include "cmdline.h"
 #include "complejo.h"
 #include "array.h"
 #include "fourier.h"
-#include "cmdline.h"
+
+using namespace std;
 
 typedef enum{
     OK,

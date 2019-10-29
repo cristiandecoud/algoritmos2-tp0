@@ -1,5 +1,5 @@
-#ifndef _FOURIER_H_INCLUDED_
-#define _FOURIER_H_INCLUDED_
+#ifndef FOURIER_H_INCLUDED_
+#define FOURIER_H_INCLUDED_
 
 
 
@@ -30,4 +30,4 @@ Array <Complejo> IDFT(const Array <Complejo>& y,  const size_t size){
 
 }
 
-#endif
+#endif 
