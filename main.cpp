@@ -6,14 +6,13 @@
 #include <sstream>
 #include <cstdlib>
 
+#include "data.h"
 #include "complejo.h"
-#include "complejo.cpp"
 #include "array.h"
 #include "fourier.h"
-
-
 #include "cmdline.h"
-#include "cmdline.cc"
+
+
 using namespace std;
 
 
@@ -28,7 +27,7 @@ static void opt_help(string const &);
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
 	{1, "o", "output", "-", opt_output, OPT_DEFAULT},
-	{1, "m", "factor", "dft", opt_method, OPT_DEFAULT},
+	{1, "m", "method", "fft", opt_method, OPT_DEFAULT},
 	{0, "h", "help", NULL, opt_help, OPT_DEFAULT},
 	{0, },
 };
@@ -97,12 +96,16 @@ opt_output(string const &arg)
 static void
 opt_method(string const &arg)
 {
-	if (arg == "dft"){
+	if (arg == "fft"){
+		method = arg;
+	}else if(arg == "ifft"){
+		method = arg;
+	}else if(arg == "dft"){
 		method = arg;
 	}else if(arg == "idft"){
 		method = arg;
 	}else{
-		cerr << "Comando '"<< arg << "' inválido - Solo se permite dft o idft"
+		cerr << "Comando inválido - Las opciones permitidas son 'fft','ifft','dft' o 'idft'"
 		     << endl;
 		exit(1);
 	}
@@ -117,83 +120,59 @@ opt_help(string const &arg)
 }
 
 
-static void fourier(istream *is, ostream *os) {
 
-    (*os) << fixed;      //Para que no imprima en notación científica.
-    (*os).precision(2);  //Para imprimir con dos decimales.
-    while( *is ) {
-
-        Array <Complejo> x; 
-        int c = is->get();
-        int d;
-        size_t i = 0;
-        bool line_error = false;
-
-        while( c != '\n'  && c != EOF ){
-
-            if( i >= x.getSize() ){
-                x.expand(x.getSize() * 2);
-            }
-
-            is->putback(c);
-            *is >> x[i];
-
-            if((is->rdstate() & ifstream::badbit) !=0){
-                
-                is->clear();
-                line_error = true;
-                i = 0;
-                c = is->get();
-                while ( c != '\n' && c != EOF){
-                    c = is->get();
-                }
-                break;
-            }
-            i++;
-
-            c = is->get();
-
-            while ( c == ' ' ) {
-                c = is->get();   // Para que no rompa cuando lee espacios al final
-            } 
-            
-
-        }
-
-        c = is->get();               
-
-        while( c == '\n' || c == ' ' ) { 
-            c = is->get();           // Para saltear lineas en blanco o llenas de espacios
-        }                                   
-        is->putback(c);
-
-        if( line_error ) {
-        	(*os) << "Error: los argumentos de esta línea no son válidos." <<endl;
-            line_error = false;
-            
-        } else if( i == 0 ){}
-        
-        else {
-			Array <Complejo> y;
-
-			if( method == "dft")
-            	y = DFT(x, i);
-			else
-				y = IDFT(x, i);
-
-            for( int k = 0; k < y.getSize(); k++ ) {
-                *os << y[k] << ' ';
-            }
-			*os << endl;
-        }        
-    };
-}
 
 int main(int argc, char * const argv[])
 {
     cmdline cmdl(options);	// Objeto con parametro tipo option_t (struct) declarado globalmente. Ver l�nea 51 main.cc
 	cmdl.parse(argc, argv); // Metodo de parseo de la clase cmdline
-    fourier(iss, oss);
+    
+	(*oss) << fixed;      //Para que no imprima en notación científica.
+    (*oss).precision(5);  //Para imprimir con dos decimales.
+
+	Array <Complejo> x;
+	size_t i = 0;
+
+	while ( * iss)
+	{	
+		if(validate_line(iss, oss, &i, x) == OK){
+			Array <Complejo> y (i);
+			Fourier f;
+
+			if( method == "fft" || method =="ifft" ){
+
+				if (is_power_of_two(i) == false){					//Si el tamaño del vector no es potencia de 2 le cambio el tamaño.
+        			size_t exponent = log2(i);
+        			i = (pow(2, exponent + 1));
+        			x.resize(i);
+					y.resize(i);
+    			}
+
+				if (method == "fft"){
+           			f.FFT(x, i, y);
+				}else{
+					f.IFFT(x, i, y);
+				}
+			}
+
+			if (method == "dft"){
+				f.DFT(x, i, y);
+			}
+			if (method == "idft"){
+				f.IDFT(x, i, y);
+			}
+
+			print_data(y, oss);	
+		}
+	}
+	ifs.close();
+	ofs.close();
+
+	iss = NULL;
+	oss = NULL;
+
+
+	return 0;
 }
 
 
